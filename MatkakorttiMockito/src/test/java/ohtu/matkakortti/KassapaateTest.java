@@ -31,7 +31,7 @@ public class KassapaateTest {
         verify(kortti, times(1)).getSaldo();
         verify(kortti).osta(eq(Kassapaate.HINTA));
     }
-
+    
     @Test
     public void kortiltaEiVelotetaJosRahaEiRiita() {
         when(kortti.getSaldo()).thenReturn(4);
@@ -40,5 +40,16 @@ public class KassapaateTest {
         verify(kortti, times(1)).getSaldo();
         verify(kortti, times(0)).osta(anyInt());
     }
-      
+    @Test
+    public void kortilleVoiLadataRahaa(){
+        when(kortti.getSaldo()).thenReturn(5);
+        kassa.lataa(kortti, 10);
+        verify(kortti).lataa(eq(10));
+    }
+    @Test
+    public void kortilleEiVoiLadataMiinusRahaa(){
+        when(kortti.getSaldo()).thenReturn(5);
+        kassa.lataa(kortti, -10);
+        verify(kortti, times(0)).lataa(anyInt());
+    }
 }
